@@ -45,7 +45,7 @@ if __name__ == '__main__':
     # 2. generator
     rows = read_rides_as_generator('../Data/ctabus.csv')
     rt22 = (row for row in rows if row['route'] == '22')
-    max_date = max(rt22, key=lambda row: int(row['rides']))
+    max_date = max(rt22, key=lambda row: int(row['rides']))  # int(row.get('rides'))
     print(max_date)
     print('Memory Use: Current %d, Peak %d' % tracemalloc.get_traced_memory())
     
