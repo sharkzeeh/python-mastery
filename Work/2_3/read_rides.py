@@ -48,4 +48,3 @@ if __name__ == '__main__':
     max_date = max(rt22, key=lambda row: int(row['rides']))  # int(row.get('rides'))
     print(max_date)
     print('Memory Use: Current %d, Peak %d' % tracemalloc.get_traced_memory())
-    
