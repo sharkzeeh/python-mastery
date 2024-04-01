@@ -1,3 +1,5 @@
+# pcost.py
+
 total_cost = 0.0
 with open('../Data/portfolio.dat') as fh:
     for line in fh:
