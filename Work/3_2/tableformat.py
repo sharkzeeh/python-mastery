@@ -1,7 +1,5 @@
 # tableformat.py
 
-import stock
-
 # (c) Table Output
 def print_table(records, fields):
     # header
@@ -17,5 +15,6 @@ def print_table(records, fields):
 
 
 if __name__ == '__main__':
+    import stock
     portfolio = stock.read_portfolio('../Data/portfolio.csv')
     print_table(portfolio, ['name','shares'])

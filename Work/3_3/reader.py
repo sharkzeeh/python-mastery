@@ -1,7 +1,6 @@
 # reader.py
 
 import csv
-import stock
 import bus_row
 
 def read_csv_as_instances(fname, cls):
@@ -16,6 +15,7 @@ def read_csv_as_instances(fname, cls):
 
 
 if __name__ == '__main__':
+    import stock
     portfolio = read_csv_as_instances('../Data/portfolio.csv', stock.Stock)
     print(portfolio)
 

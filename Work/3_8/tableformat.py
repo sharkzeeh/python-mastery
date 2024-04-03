@@ -1,9 +1,13 @@
 # tableformat.py
 
-class TableFormatter:
+from abc import ABC, abstractmethod
+
+class TableFormatter(ABC):
+    @abstractmethod
     def headings(self, headers):
         raise NotImplementedError()
     
+    @abstractmethod
     def row(self, rowdat):
         raise NotImplementedError()
 
@@ -29,17 +33,43 @@ class HTMLTableFormatter(TableFormatter):
     def row(self, rowdata):
         print(f'<tr> {" ".join("<th>" + str(d) + "</th>" for d in rowdata)} </tr>')
 
-def create_formatter(fmt):
+# (b) Going Sideways
+class ColumnFormatMixin:
+    formats = []
+    def row(self, rowdata):
+        rowdata = [fmt % d for fmt, d in zip(self.formats, rowdata)]
+        super().row(rowdata)
+
+class UpperHeadersMixin:
+    def headings(self, headers):
+        headers = [h.upper() for h in headers]
+        super().headings(headers)
+
+# (c) Making it Sane
+def create_formatter(fmt, column_formats=None, upper_headers=False):
     if fmt == 'txt':
-        return TextTableFormatter()
+        formatter_cls = TextTableFormatter
     elif fmt == 'csv':
-        return CSVTableFormatter()
+        formatter_cls = CSVTableFormatter
     elif fmt == 'html':
-        return HTMLTableFormatter()
+        formatter_cls = HTMLTableFormatter
     else:
         raise RuntimeError('Unknown format %s' % fmt)
 
+    # Add Mixins
+    if column_formats:
+        class formatter_cls(ColumnFormatMixin, formatter_cls):
+            formats = column_formats
+
+    if upper_headers:
+        class formatter_cls(UpperHeadersMixin, formatter_cls):
+            ...
+
+    return formatter_cls()
+
 def print_table(records, fields, formatter):
+    if not isinstance(formatter, TableFormatter):
+        raise TypeError('Expected a TableFormatter')
     formatter.headings(fields)
     for r in records:
         rowdata = [getattr(r, name) for name in fields]
@@ -50,11 +80,7 @@ if __name__ == '__main__':
     import reader
     import stock
     portfolio = reader.read_csv_as_instances('../Data/portfolio.csv', stock.Stock)
-    formatter = create_formatter('txt')
-    print_table(portfolio, ['name','shares', 'price'], formatter)
-
-    formatter = create_formatter('csv')
-    print_table(portfolio, ['name','shares', 'price'], formatter)
-
-    formatter = create_formatter('html')
-    print_table(portfolio, ['name','shares', 'price'], formatter)
+    formatter = create_formatter('txt',
+                                 column_formats=['%s', '%d', '%.2f'],
+                                 upper_headers=True)
+    print_table(portfolio, ['name', 'shares', 'price'], formatter)

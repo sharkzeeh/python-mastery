@@ -1,7 +1,5 @@
 # tableformat.py
 
-import stock
-
 class TableFormatter:
     def headings(self, headers):
         raise NotImplementedError()
@@ -22,7 +20,7 @@ class CSVTableFormatter(TableFormatter):
         print(','.join(headers))
 
     def row(self, rowdata):
-        print(','.join([str(d) for d in rowdata]))
+        print(','.join(str(d) for d in rowdata))
 
 class HTMLTableFormatter(TableFormatter):
     def headings(self, headers):
@@ -50,6 +48,7 @@ def print_table(records, fields, formatter):
 
 if __name__ == '__main__':
     import reader
+    import stock
     portfolio = reader.read_csv_as_instances('../Data/portfolio.csv', stock.Stock)
     formatter = create_formatter('txt')
     print_table(portfolio, ['name','shares', 'price'], formatter)

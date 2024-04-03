@@ -1,9 +1,13 @@
 # tableformat.py
 
-class TableFormatter:
+from abc import ABC, abstractmethod
+
+class TableFormatter(ABC):
+    @abstractmethod
     def headings(self, headers):
         raise NotImplementedError()
     
+    @abstractmethod
     def row(self, rowdat):
         raise NotImplementedError()
 
@@ -39,7 +43,10 @@ def create_formatter(fmt):
     else:
         raise RuntimeError('Unknown format %s' % fmt)
 
+# (a) Interfaces and type checking
 def print_table(records, fields, formatter):
+    if not isinstance(formatter, TableFormatter):
+        raise TypeError('Expected a TableFormatter')
     formatter.headings(fields)
     for r in records:
         rowdata = [getattr(r, name) for name in fields]
@@ -50,11 +57,16 @@ if __name__ == '__main__':
     import reader
     import stock
     portfolio = reader.read_csv_as_instances('../Data/portfolio.csv', stock.Stock)
+
+    # (a) Interfaces and type checking
+    class MyFormatter:
+        def headings(self, headers): ...
+        def row(self, rowdata): ...
+    wrong_formatter = MyFormatter()
+    try:
+        print_table(portfolio, ['name','shares', 'price'], wrong_formatter)
+    except TypeError as e:
+        print(e)
+
     formatter = create_formatter('txt')
-    print_table(portfolio, ['name','shares', 'price'], formatter)
-
-    formatter = create_formatter('csv')
-    print_table(portfolio, ['name','shares', 'price'], formatter)
-
-    formatter = create_formatter('html')
     print_table(portfolio, ['name','shares', 'price'], formatter)

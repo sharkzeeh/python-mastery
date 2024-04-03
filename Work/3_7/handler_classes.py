@@ -1,4 +1,13 @@
-# tableformat.py
+# Handler Classes
+
+# Sometimes code will implement a general 
+# purpose algorithm, but will defer certain steps 
+# to a separately supplied handler object
+
+# Sometimes known as the "strategy" design pattern.
+
+# The handler only contains the methods that 
+# need to be implemented/customized
 
 class TableFormatter:
     def headings(self, headers):
@@ -20,29 +29,27 @@ class CSVTableFormatter(TableFormatter):
         print(','.join(headers))
 
     def row(self, rowdata):
-        print(','.join(str(d) for d in rowdata))
+        print(','.join([str(d) for d in rowdata]))
 
-class HTMLTableFormatter(TableFormatter):
-    def headings(self, headers):
-        print(f'<tr> {"".join("<th>" + h + "</th>" for h in headers)} </tr>')
-    
-    def row(self, rowdata):
-        print(f'<tr> {" ".join("<th>" + str(d) + "</th>" for d in rowdata)} </tr>')
-
+# Builder
 def create_formatter(fmt):
     if fmt == 'txt':
         return TextTableFormatter()
     elif fmt == 'csv':
         return CSVTableFormatter()
-    elif fmt == 'html':
-        return HTMLTableFormatter()
     else:
         raise RuntimeError('Unknown format %s' % fmt)
 
+# Example of Handler class
 def print_table(records, fields, formatter):
+    '''
+    formatter - handler class
+    '''
+    # call to handler method
     formatter.headings(fields)
     for r in records:
         rowdata = [getattr(r, name) for name in fields]
+        # call to handler method
         formatter.row(rowdata)
 
 
@@ -50,11 +57,5 @@ if __name__ == '__main__':
     import reader
     import stock
     portfolio = reader.read_csv_as_instances('../Data/portfolio.csv', stock.Stock)
-    formatter = create_formatter('txt')
-    print_table(portfolio, ['name','shares', 'price'], formatter)
-
-    formatter = create_formatter('csv')
-    print_table(portfolio, ['name','shares', 'price'], formatter)
-
-    formatter = create_formatter('html')
-    print_table(portfolio, ['name','shares', 'price'], formatter)
+    formatter = TextTableFormatter()
+    print_table(portfolio, ['name', 'shares'], formatter)
