@@ -1,9 +1,7 @@
 # stock.py
 
-from decimal import Decimal
-
 class Stock:
-    
+
     __slots__ = ['name', '_shares', '_price']
 
     _types = (str, int, float)
@@ -48,9 +46,6 @@ class Stock:
 
     def sell(self, n):
         self.shares -= n
-
-class DStock(Stock):
-    _types = (str, int, Decimal)
 
 
 if __name__ == '__main__':

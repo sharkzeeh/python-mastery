@@ -1,10 +1,9 @@
 # stock.py
 
-from decimal import Decimal
 from validate import PositiveInteger, PositiveFloat
 
 class Stock:
-    
+
     __slots__ = ['name', '_shares', '_price']
 
     def __init__(self, name, shares, price):
@@ -47,9 +46,6 @@ class Stock:
         return isinstance(other, Stock) and \
             ((self.name, self.shares, self.price) ==
              (other.name, other.shares, other.price))
-
-class DStock(Stock):
-    _types = (str, int, Decimal)
 
 
 if __name__ == '__main__':

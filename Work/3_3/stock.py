@@ -27,6 +27,11 @@ class DStock(Stock):
 
 
 if __name__ == '__main__':
+    # (b) Class variables and inheritance
+    row = ['AA', '100', '32.20']
+    ds = DStock.from_row(row)
+    print(ds.price, ds.cost)
+
     import reader
     portfolio = reader.read_csv_as_instances('../Data/portfolio.csv', Stock)
     print(portfolio)

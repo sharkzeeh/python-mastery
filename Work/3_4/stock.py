@@ -3,7 +3,7 @@
 from decimal import Decimal
 
 class Stock:
-    
+
     __slots__ = ['name', '_shares', '_price']
 
     _types = (str, int, float)
