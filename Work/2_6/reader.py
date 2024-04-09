@@ -17,7 +17,7 @@ def read_csv_as_dicts(fname, types):
     return records
 
 # (d) Special Challenge Project
-def read_csv_as_columns(fname, types):
+def read_csv_as_columns(fname):
     '''
     Read the bus ride data into 4 lists, representing columns
     '''
