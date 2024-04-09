@@ -17,8 +17,10 @@ class Descriptor:
 
     def __set__(self, instance, value):
         instance.__dict__[self.name] = value
-    
+
     # Allows to write x = Descriptor() -> x.__set_name__(Foo, 'x')
+    # NOTE: descriptor needs at least one method
+    #       __init__ or __set_name__
     def __set_name__(self, cls, name):
         self.name = name
 

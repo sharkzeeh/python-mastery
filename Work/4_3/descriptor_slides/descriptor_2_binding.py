@@ -1,5 +1,6 @@
 # Descriptor Binding
 # Descriptors always override __dict__
+
 class Descriptor:
     def __init__(self, name):
         self.name = name

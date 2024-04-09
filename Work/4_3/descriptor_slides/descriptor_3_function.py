@@ -15,7 +15,7 @@ class Stock:
 if __name__ == '__main__':
     s = Stock('GOOG', 100, 490.10)
     # class attribute lookup
-    value = Stock.__dict__['cost']
+    value = Stock.__dict__['cost']  # function-descriptor
     print(value)
     # descriptor check
     assert hasattr(value, '__get__') == True
