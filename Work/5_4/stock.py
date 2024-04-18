@@ -44,3 +44,4 @@ if __name__ == '__main__':
         s.shares = '50'
     except TypeError as e:
         print(e)
+    print(s.shares)

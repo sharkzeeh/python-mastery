@@ -13,7 +13,7 @@ def typedproperty(name, expected_type):
     def value(self, val):
         if not isinstance(val, expected_type):
             raise TypeError(f'Expected {expected_type}')
-        return value
+        setattr(self, private_name, val)
 
     # return property object
     return value
@@ -26,3 +26,22 @@ def Integer(name):
 
 def Float(name):
     return typedproperty(name, float)
+
+
+if __name__ == '__main__':
+    class Stock:
+        name = String('name')
+        shares = Integer('shares')
+        price = Float('price')
+        def __init__(self, name, shares, price):
+            self.name = name
+            self.shares = shares
+            self.price = price
+
+    s = Stock('GOOG', 100, 490.1)
+    # throws type error
+    try:
+        s.shares = '50'
+    except TypeError as e:
+        print(e)
+    print(s.shares)
