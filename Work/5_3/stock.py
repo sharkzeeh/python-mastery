@@ -1,5 +1,7 @@
 # stock.py
 
+from validate import PositiveInteger, PositiveFloat
+
 class Stock:
 
     __slots__ = ['name', '_shares', '_price']
@@ -22,11 +24,7 @@ class Stock:
     
     @shares.setter
     def shares(self, value):
-        if not isinstance(value, self._types[1]):
-            raise TypeError(f'Expected {self._types[1].__name__}')
-        if value < 0:
-            raise ValueError('shares must be >= 0')
-        self._shares = value
+        self._shares = PositiveInteger.check(value)
 
     @property
     def price(self):
@@ -34,11 +32,7 @@ class Stock:
 
     @price.setter
     def price(self, value):
-        if not isinstance(value, self._types[2]):
-            raise TypeError(f'Expected {self._types[2].__name__}')
-        if value < 0:
-            raise ValueError('price must be >= 0')
-        self._price = value
+        self._price = PositiveFloat.check(value)
 
     @property
     def cost(self):
@@ -57,14 +51,5 @@ class Stock:
 
 
 if __name__ == '__main__':
-    # (a) Better output for representing objects
     s = Stock('GOOG', 100, 490.1)
-    print(repr(s))
-
-    import reader
-    portfolio = reader.read_csv_as_instances('../Data/portfolio.csv', Stock)
-    print(portfolio)
-
-    # (b) Making objects comparable
-    s2 = Stock('GOOG', 100, 490.1)
-    assert s == s2
+    print(s)

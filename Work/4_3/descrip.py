@@ -11,9 +11,9 @@ class Descriptor:
         print('%s:__delete__' % self.name)
 
 class Foo:
-        a = Descriptor('a')
-        b = Descriptor('b')
-        c = Descriptor('c')
+    a = Descriptor('a')
+    b = Descriptor('b')
+    c = Descriptor('c')
 
 if __name__ == '__main__':
     f = Foo()

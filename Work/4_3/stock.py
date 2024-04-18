@@ -9,6 +9,8 @@ class Stock:
     shares = PositiveInteger()
     price = PositiveFloat()
 
+    _types = (str, int, float)
+
     def __init__(self, name, shares, price):
         self.name = name
         self.shares = shares

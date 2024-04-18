@@ -18,7 +18,7 @@ class Integer:
         instance.__dict__[self.name] = value
 
 class Stock:
-    name   = String('name',maxlen=8)
+    name   = String('name', maxlen=8)
     shares = Integer('shares')
     price  = Real('price')
 
@@ -26,7 +26,7 @@ class Stock:
 if __name__ == '__main__':
     s = Stock()
     s.shares = 42
-    print(s.__dict__)               # {'shares': 42}
+    print(s.__dict__)   # {'shares': 42}
     print(s.shares)
     try:
         s.shares = 42.0

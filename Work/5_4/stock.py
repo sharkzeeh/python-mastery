@@ -1,10 +1,13 @@
 # stock.py
 
-from validate import PositiveInteger, PositiveFloat
+# (b) Closures as a code generator
+from typedproperty import String, Integer, Float
 
 class Stock:
 
-    __slots__ = ['name', '_shares', '_price']
+    name = String('name')
+    shares = Integer('shares')
+    price = Float('price')
 
     _types = (str, int, float)
 
@@ -17,22 +20,6 @@ class Stock:
     def from_row(cls, row):
         values = [func(val) for func, val in zip(cls._types, row)]
         return cls(*values)
-
-    @property
-    def shares(self):
-        return self._shares
-    
-    @shares.setter
-    def shares(self, value):
-        self._shares = PositiveInteger.check(value)
-
-    @property
-    def price(self):
-        return self._price
-
-    @price.setter
-    def price(self, value):
-        self._price = PositiveFloat.check(value)
 
     @property
     def cost(self):
@@ -52,4 +39,8 @@ class Stock:
 
 if __name__ == '__main__':
     s = Stock('GOOG', 100, 490.1)
-    print(s)
+    # throws type error
+    try:
+        s.shares = '50'
+    except TypeError as e:
+        print(e)
