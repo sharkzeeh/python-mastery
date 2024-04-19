@@ -1,9 +1,6 @@
 # typedproperty.py
 
-# (c) Challenge: Eliminating names
 class SpecialProperty(property):
-    # NOTE: property is a descriptor itself
-    # owner == class Stock
     def __set_name__(self, owner, name):
         self.private_name = '_' + name
         super().__set_name__(owner, name)
@@ -20,7 +17,6 @@ def typedproperty(expected_type):
             raise TypeError(f'Expected {expected_type}')
         setattr(self, value.private_name, val)
 
-    # return property object
     return value
 
 def String():
@@ -44,7 +40,6 @@ if __name__ == '__main__':
             self.price = price
 
     s = Stock('GOOG', 100, 490.1)
-    # throws type error
     try:
         s.shares = '50'
     except TypeError as e:

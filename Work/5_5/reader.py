@@ -2,18 +2,11 @@
 
 import csv
 
-# (a) Using higher-order functions
-# (b) Using map()
 def convert_csv(lines, converter, *, headers=None):
     rows = csv.reader(lines)
     if headers is None:
         headers = next(rows)
     return list(map(lambda row: converter(headers, row), rows))
-    # records = []
-    # for row in rows:
-    #     record = converter(headers, row)
-    #     records.append(record)
-    # return records
 
 def csv_as_dicts(lines, types, *, headers=None):
     def make_row(headers, row):
@@ -26,9 +19,6 @@ def csv_as_instances(lines, cls, *, headers=None):
     def make_row(headers, row):
         return cls.from_row(row)
     return convert_csv(lines, make_row)
-    # return convert_csv(
-    #     lines, 
-    #     lambda headers, row: row: cls.from_row(row))
 
 def read_csv_as_dicts(filename, types, *, headers=None):
     '''

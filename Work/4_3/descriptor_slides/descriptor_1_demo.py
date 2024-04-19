@@ -1,3 +1,5 @@
+# Descriptor Demo
+
 # Whenever an attribute is accessed on a class,
 # the attribute is checked to see if it is an 
 # object that looks like a so-called "descriptor"
@@ -7,20 +9,22 @@
 #   d.__get__(obj, cls)
 #   d.__set__(obj, value)
 #   d.__delete__(obj)
+
 # If a descriptor is detected, one of the above
 # methods gets triggered on access
-# Minor note: __get__() can be omitted if the name
+# NOTE: __get__() can be omitted if the name
 # exactly matches that in the instance dict
 
 # Basically, a descriptor is just
-# an object with get, set, and delete methods
+# an object with __get__, __set__, and __delete__ methods
 
 # Descriptors are presented with information
 # about the instance, class, and values
 
-# Dummy descriptor example
-# Confusion:  self is the descriptor itself, instance
-# is the object it's operating on.
+# NOTE: `self` is the descriptor itself, 
+#       `instance` is the object it's operating on
+#       `cls` is the class of that instance (by default)
+
 class Descriptor:
     def __init__(self, name):
         self.name = name

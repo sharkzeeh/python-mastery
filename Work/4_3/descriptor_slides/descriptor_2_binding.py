@@ -1,4 +1,5 @@
 # Descriptor Binding
+
 # Descriptors always override __dict__
 
 class Descriptor:
@@ -19,12 +20,12 @@ class Foo:
 
 if __name__ == '__main__':
     # f = Foo()
-    # f.a = 23            # Stores value in f.__dict__['a']
+    # f.a = 23            # stores value in f.__dict__['a']
     f = Foo()
     f.__dict__['a'] = 42
-    print(f.__dict__)   # {'a': 42}
-    value = f.a         # a:__get__
-    print(value)        # 42
+    print('f.__dict__:', f.__dict__)    # {'a': 42}
+    value = f.a                         # a:__get__
+    print(value)                        # 42
 
     # The descriptor runs regardless
     # The value in the instance dictionary

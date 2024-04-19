@@ -26,6 +26,7 @@ class Stock:
     def shares(self):
         return self._shares
     
+    # overrides `shares` descriptor __set__
     @shares.setter
     def shares(self, value):
         self._shares = PositiveInteger.check(value)
