@@ -2,14 +2,21 @@
 
 class Stock:
 
-    __slots__ = ['name', '_shares', '_price']
-
+    __slots__ = ('name','_shares','_price')
     _types = (str, int, float)
 
     def __init__(self, name, shares, price):
         self.name = name
         self.shares = shares
         self.price = price
+
+    def __repr__(self):
+        # Note: The !r format code produces the repr() string
+        return f'{type(self).__name__}({self.name!r}, {self.shares!r}, {self.price!r})'
+
+    def __eq__(self, other):
+        return isinstance(other, Stock) and ((self.name, self.shares, self.price) ==
+                (other.name, other.shares, other.price))
 
     @classmethod
     def from_row(cls, row):
@@ -19,7 +26,6 @@ class Stock:
     @property
     def shares(self):
         return self._shares
-    
     @shares.setter
     def shares(self, value):
         if not isinstance(value, self._types[1]):
@@ -31,7 +37,6 @@ class Stock:
     @property
     def price(self):
         return self._price
-
     @price.setter
     def price(self, value):
         if not isinstance(value, self._types[2]):
@@ -44,28 +49,5 @@ class Stock:
     def cost(self):
         return self.shares * self.price
 
-    def sell(self, n):
-        self.shares -= n
-
-    def __repr__(self):
-        # Note: The !r format code produces the repr() string
-        return f'{type(self).__name__}({self.name!r}, {self.shares!r}, {self.price!r})'
-
-    def __eq__(self, other):
-        return isinstance(other, Stock) and \
-            ((self.name, self.shares, self.price) ==
-             (other.name, other.shares, other.price))
-
-
-if __name__ == '__main__':
-    # (a) Better output for representing objects
-    s = Stock('GOOG', 100, 490.1)
-    print(repr(s))
-
-    import reader
-    portfolio = reader.read_csv_as_instances('../Data/portfolio.csv', Stock)
-    print(portfolio)
-
-    # (b) Making objects comparable
-    s2 = Stock('GOOG', 100, 490.1)
-    assert s == s2
+    def sell(self, nshares):
+        self.shares -= nshares

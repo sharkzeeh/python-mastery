@@ -3,7 +3,6 @@
 class SpecialProperty(property):
     def __set_name__(self, owner, name):
         self.private_name = '_' + name
-        super().__set_name__(owner, name)
 
 def typedproperty(expected_type):
 
