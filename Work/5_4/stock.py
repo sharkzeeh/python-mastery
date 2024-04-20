@@ -1,13 +1,19 @@
 # stock.py
 
-# (b) Closures as a code generator
-from typedproperty import String, Integer, Float
+# from typedproperty_b import String, Integer, Float
+from typedproperty_c import String, Integer, Float
 
 class Stock:
 
-    name = String('name')
-    shares = Integer('shares')
-    price = Float('price')
+    # (b) Closures as a code generator
+    # name = String('name')
+    # shares = Integer('shares')
+    # price = Float('price')
+
+    # (c) Challenge: Eliminating names
+    name = String()
+    shares = Integer()
+    price = Float()
 
     _types = (str, int, float)
 

@@ -4,9 +4,11 @@
 class SpecialProperty(property):
     # NOTE: property is a descriptor itself
     # owner == class Stock
+
+    # Took solution from github
     def __set_name__(self, owner, name):
         self.private_name = '_' + name
-        super().__set_name__(owner, name)
+        # super().__set_name__(owner, name)
 
 def typedproperty(expected_type):
 
