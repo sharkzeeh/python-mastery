@@ -1,4 +1,4 @@
-# stock.py
+# orig_stock.py
 
 class Stock:
 
@@ -26,7 +26,6 @@ class Stock:
     @property
     def shares(self):
         return self._shares
-
     @shares.setter
     def shares(self, value):
         if not isinstance(value, self._types[1]):
@@ -38,7 +37,6 @@ class Stock:
     @property
     def price(self):
         return self._price
-
     @price.setter
     def price(self, value):
         if not isinstance(value, self._types[2]):

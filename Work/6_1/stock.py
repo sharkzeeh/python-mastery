@@ -1,8 +1,10 @@
 # stock.py
 
-class Stock:
+from structure import Structure
 
-    __slots__ = ('name','_shares','_price')
+class Stock(Structure):
+
+    _fields = ('name', 'shares', 'price')
     _types = (str, int, float)
 
     def __init__(self, name, shares, price):
@@ -11,7 +13,6 @@ class Stock:
         self.price = price
 
     def __repr__(self):
-        # Note: The !r format code produces the repr() string
         return f'{type(self).__name__}({self.name!r}, {self.shares!r}, {self.price!r})'
 
     def __eq__(self, other):
