@@ -13,8 +13,6 @@ class Structure:
         for name, val in locs.items():
             setattr(self, name, val)
 
-    # (c) Putting it Together
-    # allows to set `_fields` from `Stock` class signature
     @classmethod
     def set_fields(cls):
         sig = inspect.signature(cls)
