@@ -50,3 +50,5 @@ if __name__ == '__main__':
         s.share = 50
     except AttributeError as e:
         print(e)
+
+    print(help(s.__init__))  # useless __init__ signature
