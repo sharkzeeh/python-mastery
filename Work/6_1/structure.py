@@ -1,8 +1,5 @@
 # structure.py
 
-from typing import Any
-
-
 class Structure:
     _fields = ()
     # (a) Simplified Data Structures
@@ -11,6 +8,13 @@ class Structure:
             raise TypeError('Expected %d arguments' % (len(self._fields), ))
         for field, arg in zip(self._fields, args):
             setattr(self, field, arg)
+            # super().__setattr__(field, arg) # will not call Structure.__setattr__
+
+    # (c) Restricting Attribute Names
+    def __setattr__(self, name, value):
+        if name not in self._fields and not name.startswith('_'):
+            raise AttributeError('No attribute %s' % (name, ))
+        super().__setattr__(name, value)
 
     # (b) Making a Useful Representation
     def __repr__(self):
@@ -18,13 +22,6 @@ class Structure:
         return '%s(%s)' % (type(self).__name__,
                            ', '.join((repr(getattr(self, field)) for field in self._fields))
                            )
-    
-    # (c) Restricting Attribute Names
-    def __setattr__(self, name, value):
-        if name not in self._fields and not name.startswith('_'):
-            raise AttributeError('No attribute %s' % (name, ))
-        super().__setattr__(name, value)
-
 
 class Stock(Structure):
     _fields = ('name', 'shares', 'price')

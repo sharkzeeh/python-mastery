@@ -3,7 +3,11 @@
 from structure import Structure
 
 class Stock(Structure):
+
     _fields = ('name', 'shares', 'price')
+
+    def __init__(self, name, shares, price):
+        self._init()
 
     @property
     def cost(self):
@@ -11,3 +15,8 @@ class Stock(Structure):
 
     def sell(self, nshares):
         self.shares -= nshares
+
+if __name__ == '__main__':
+    s = Stock(name='GOOG', price=490.1, shares=50)
+    assert hasattr(s, '_init')
+    print(s.name, s.shares, s.price)
