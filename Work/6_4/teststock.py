@@ -27,6 +27,6 @@ class TestStock(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    stock.Stock.set_fields()
+    stock.Stock.create_init()
 
     unittest.main()
