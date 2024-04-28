@@ -12,9 +12,11 @@ class ValidatedFunction:
 
     def __call__(self, *args, **kwargs):
         print('Calling', self.func)
+        # print(inspect.signature(self.func))
+        # (self, nshares: validate.Integer)
         bound = self.sig.bind(*args, **kwargs)
-        # from exercise example: bound args = (10,)
-        # missing `self` -> FAILS in `stock.py` ?
+        # from exercise 6.5 (c): args = (10,)
+        # missing `self` arg -> Fails in stock.py
         for name, val in self.annotation.items():
             val.check(bound.arguments[name])
 
