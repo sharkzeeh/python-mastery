@@ -12,8 +12,9 @@ class Stock:
     def cost(self):
         return self.shares * self.price
 
-    def sell(self, nshares:validate.Integer):
+    def sell(self, nshares: validate.Integer):
         self.shares -= nshares
+
     # (c) Use as a Method (Challenge)
     sell = validate.ValidatedFunction(sell)     # Fails
 

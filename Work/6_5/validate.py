@@ -4,19 +4,18 @@ import inspect
 
 # (a) Creating a Callable Object
 # (b) Enforcement
-
-
 class ValidatedFunction:
     def __init__(self, func):
         self.func = func
+        self.sig = inspect.signature(self.func)
+        self.annotation = self.func.__annotations__
 
     def __call__(self, *args, **kwargs):
         print('Calling', self.func)
-        sig = inspect.signature(self.func)
-        bound = sig.bind(*args, **kwargs)
+        bound = self.sig.bind(*args, **kwargs)
         # from exercise example: bound args = (10,)
         # missing `self` -> FAILS in `stock.py` ?
-        for name, val in self.func.__annotations__.items():
+        for name, val in self.annotation.items():
             val.check(bound.arguments[name])
 
         result = self.func(*args, **kwargs)
@@ -91,7 +90,7 @@ if __name__ == '__main__':
     # 5
 
     # (b) Enforcement
-    def add(x: Integer, y:Integer):
+    def add(x: Integer, y: Integer):
         return x + y
 
     add = ValidatedFunction(add)
