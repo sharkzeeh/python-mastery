@@ -12,7 +12,7 @@ class ValidatedFunction:
 
     def __call__(self, *args, **kwargs):
         print('Calling', self.func)
-        # print(inspect.signature(self.func))
+        # >>> print(inspect.signature(self.func))
         # (self, nshares: validate.Integer)
         bound = self.sig.bind(*args, **kwargs)
         # from exercise 6.5 (c): args = (10,)
