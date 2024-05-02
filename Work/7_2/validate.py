@@ -1,5 +1,7 @@
 # validate.py
 
+# (d) Validation (Redux)
+
 import inspect
 from functools import wraps
 
@@ -22,6 +24,27 @@ def validated(func):
     retcheck = annotations.pop('return', None)  # check return type
 
     return wrapper
+
+def enforce(**annotations):
+    retcheck = annotations.pop('return_', None)
+    def decorate(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            print('Calling', func)
+            bound = sig.bind(*args, **kwargs)
+            print(annotations)
+            for name, val in annotations.items():
+                val.check(bound.arguments[name])
+            result = func(*args, **kwargs)
+            if retcheck:
+                try:
+                    retcheck.check(result)
+                except Exception as e:
+                    raise TypeError(f'Bad return: {e}')
+            return result
+        sig = inspect.signature(func)
+        return wrapper
+    return decorate
 
 class Validator:
 
@@ -80,22 +103,13 @@ class NonEmptyString(String, NonEmpty):
 
 
 if __name__ == '__main__':
-    @validated
-    def add(x: Integer, y: Integer) -> Integer:
+    @enforce(x=Integer, y=Integer, return_=Integer)
+    def add(x, y):
         return x + y
 
-    @validated
-    def pow(x: Integer, y: Integer) -> Integer:
-        return x ** y
-    
     add(2, 3)   # ok
-    pow(2, 3)   # ok
 
     try:
         add('2', '3')
-    except TypeError as e:
-        print(e)
-    try:
-        pow(2, -1.0)
     except TypeError as e:
         print(e)

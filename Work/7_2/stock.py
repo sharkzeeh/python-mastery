@@ -13,21 +13,8 @@ class Stock:
     @property
     def cost(self):
         return self.shares * self.price
-
-    # (c) Use as a Method (Challenge)
-    # def sell(self, nshares: validate.Integer):
-    #     self.shares -= nshares
-    # sell = validate.ValidatedFunction(sell)     # Fails
-
-    # also works if defined outside of class definition
-    def validated(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            other = validate.ValidatedFunction(func)
-            return other(*args, **kwargs)
-        return wrapper
     
-    @validated
+    @validate.validated
     def sell(self, nshares: validate.Integer):
         # >>> print(inspect.signature(self.sell))
         # (nshares: validate.Integer)

@@ -8,12 +8,14 @@ class ValidatedFunction:
     def __init__(self, func):
         self.func = func
         self.sig = inspect.signature(self.func)
+        # >>> inspect.signature(self.func)
+        # (self, nshares: validate.Integer)
         self.annotation = self.func.__annotations__
+        # >>> self.annotation
+        # {'x': <class '__main__.Integer'>, 'y': <class '__main__.Integer'>}
 
     def __call__(self, *args, **kwargs):
         print('Calling', self.func)
-        # >>> print(inspect.signature(self.func))
-        # (self, nshares: validate.Integer)
         bound = self.sig.bind(*args, **kwargs)
         # from exercise 6.5 (c): args = (10,)
         # missing `self` arg -> Fails in stock.py
