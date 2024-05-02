@@ -19,7 +19,7 @@ def validated(func):
         return result
     sig = inspect.signature(func)
     annotations = func.__annotations__
-    retcheck = annotations.pop('return', None)  # check return type
+    retcheck = annotations.pop('return', None)  # get return type
 
     return wrapper
 

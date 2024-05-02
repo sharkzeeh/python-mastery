@@ -16,8 +16,9 @@ class Stock(Structure):
     def sell(self, nshares):
         self.shares -= nshares
 
-if __name__ == '__main__':
-    Stock.create_init()
+Stock.create_init()
 
+
+if __name__ == '__main__':
     s = Stock(name='GOOG', price=490.1, shares=50)
     print(s)

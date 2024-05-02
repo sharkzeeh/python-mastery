@@ -14,9 +14,11 @@ class Stock(Structure):
     def sell(self, nshares):
         self.shares -= nshares
 
+Stock.set_fields()
+
+
 if __name__ == '__main__':
     # (c) Putting it Together
-    Stock.set_fields()
 
     s = Stock(name='GOOG', price=490.1, shares=50)
     import inspect

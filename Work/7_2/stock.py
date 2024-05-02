@@ -1,8 +1,6 @@
 # stock.py
 
-import functools
 import validate
-import inspect
 
 class Stock:
     def __init__(self, name, shares, price):
@@ -16,8 +14,6 @@ class Stock:
     
     @validate.validated
     def sell(self, nshares: validate.Integer):
-        # >>> print(inspect.signature(self.sell))
-        # (nshares: validate.Integer)
         self.shares -= nshares
 
 
