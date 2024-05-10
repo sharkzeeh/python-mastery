@@ -1,49 +1,73 @@
 # validate.py
 
-# (d) Validation (Redux)
+# (c) Making a lot of classes
 
 import inspect
 from functools import wraps
 
 def validated(func):
+    sig = inspect.signature(func)
+    annotations = func.__annotations__
+
+    # Get the return annotation (if any)
+    retcheck = annotations.pop('return', None)
+
     @wraps(func)
     def wrapper(*args, **kwargs):
-        print('Calling', func)
         bound = sig.bind(*args, **kwargs)
-        # val (Validator) checks passed value type
+        errors = []
+
+        # Enforce argument checks
         for name, val in annotations.items():
-            val.check(bound.arguments[name])
+            try:
+                val.check(bound.arguments[name])
+            except Exception as e:
+                errors.append(f'    {name}: {e}')
+
+        if errors:
+            raise TypeError('Bad arguments\n' + '\n'.join(errors))
+
         result = func(*args, **kwargs)
+
+        # Enforce return check (if any)
         if retcheck:
             try:
                 retcheck.check(result)
             except Exception as e:
                 raise TypeError(f'Bad return: {e}')
         return result
-    sig = inspect.signature(func)
-    annotations = func.__annotations__
-    retcheck = annotations.pop('return', None)  # get return type
 
     return wrapper
 
 def enforce(**annotations):
+    # Get the return annotation (if any)
     retcheck = annotations.pop('return_', None)
+
     def decorate(func):
+        sig = inspect.signature(func)
+
         @wraps(func)
         def wrapper(*args, **kwargs):
-            print('Calling', func)
             bound = sig.bind(*args, **kwargs)
-            # val (Validator) checks passed value type
+            errors = []
+
             for name, val in annotations.items():
-                val.check(bound.arguments[name])
+                try:
+                    val.check(bound.arguments[name])
+                except Exception as e:
+                    errors.append(f'    {name}: {e}')
+            
+            if errors:
+                raise TypeError('Bad Arguments\n' + '\n'.join(errors))
+
             result = func(*args, **kwargs)
+
             if retcheck:
                 try:
                     retcheck.check(result)
                 except Exception as e:
                     raise TypeError(f'Bad return: {e}')
             return result
-        sig = inspect.signature(func)
         return wrapper
     return decorate
 
@@ -70,47 +94,18 @@ class Typed(Validator):
             raise TypeError(f'Expected {cls.expected_type}')
         return super().check(value)
 
-class Integer(Typed):
-    expected_type = int
+_typed_classes = [
+    ('Integer', int),
+    ('Float', float),
+    ('String', str) ]
 
-class Float(Typed):
-    expected_type = float
-
-class String(Typed):
-    expected_type = str
-
-class Positive(Validator):
-    @classmethod
-    def check(cls, value):
-        if value < 0:
-            raise ValueError('Expected >= 0')
-        return super().check(value)
-
-class NonEmpty(Validator):
-    @classmethod
-    def check(cls, value):
-        if len(value) == 0:
-            raise ValueError('Must be non-empty')
-        return super().check(value)
-
-class PositiveInteger(Integer, Positive):
-    ...
-
-class PositiveFloat(Float, Positive):
-    ...
-
-class NonEmptyString(String, NonEmpty):
-    ...
+globals().update((name,
+                  type(name, (Typed,), {'expected_type': ty}))
+                 for name, ty in _typed_classes)
 
 
 if __name__ == '__main__':
-    @enforce(x=Integer, y=Integer, return_=Integer)
-    def add(x, y):
-        return x + y
-
-    add(2, 3)   # ok
-
-    try:
-        add('2', '3')
-    except TypeError as e:
-        print(e)
+    # print(globals())
+    integer = Integer() # type: ignore
+    res = integer.check(5)
+    print(res)

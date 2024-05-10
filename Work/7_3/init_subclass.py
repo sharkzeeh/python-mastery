@@ -20,3 +20,11 @@ if __name__ == '__main__':
 
     Mistery = GermanPhilosopher()
     print(Mistery.default_name)
+
+    # Called __init_subclass(<class '__main__.AustralianPhilosopher'>)
+    # Changed cls.default_name to Bruce
+    # Set name to Hegel
+    # Called __init_subclass(<class '__main__.GermanPhilosopher'>)
+    # Changed cls.default_name to Nietzsche
+    # Bruce
+    # Nietzsche

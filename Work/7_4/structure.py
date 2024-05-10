@@ -1,12 +1,6 @@
 # structure.py
 
-# (e) Method Argument Checking
-
-# Remember that @validated decorator you wrote in the last part?
-# Let's modify the @validate_attributes decorator so that any method
-# in the class with annotations gets wrapped by @validated
-# automatically. This allows you to put enforced annotations on methods
-# such as the sell() method:
+# (b) Typed structures
 
 from validate import Validator, validated
 
@@ -65,3 +59,19 @@ class Structure:
     def from_row(cls, row):
         rowdata = [func(val) for func, val in zip(cls._types, row)]
         return cls(*rowdata)
+
+def typed_structure(clsname, **validators):
+    cls = type(clsname, (Structure,), validators)
+    return cls
+
+
+if __name__ == '__main__':
+    from validate import String, PositiveInteger, PositiveFloat
+    Stock = typed_structure('Stock', 
+                            name=String(), 
+                            shares=PositiveInteger(), 
+                            price=PositiveFloat()
+                            )
+    s = Stock('GOOG', 100, 490.1)
+    print(s)
+    print(s.__dict__)   # {'name': 'GOOG', 'shares': 100, 'price': 490.1}
