@@ -1,6 +1,7 @@
 # reader.py
 
 import csv
+from stock import Stock
 
 def convert_csv(lines, converter, *, headers=None):
     rows = csv.reader(lines)
@@ -41,3 +42,12 @@ def read_csv_as_instances(filename, cls, *, headers=None):
     '''
     with open(filename) as file:
         return csv_as_instances(file, cls, headers=headers)
+
+
+if __name__ == '__main__':
+    portfolio = read_csv_as_instances('../Data/portfolio.csv', Stock)
+    print(portfolio)
+
+    from tableformat import create_formatter, print_table
+    formatter = create_formatter('text')
+    print_table(portfolio, ['name','shares','price'], formatter)

@@ -1,8 +1,5 @@
 # validate.py
 
-# (c) Making a lot of classes
-# Find full validate.py in 7.3
-
 import inspect
 from functools import wraps
 
@@ -86,6 +83,13 @@ class Validator:
     @classmethod
     def check(cls, value):
         return value
+    
+    # Collect all derived classes into a dict
+    validators = {}
+    @classmethod
+    def __init_subclass__(cls):
+        cls.validators[cls.__name__] = cls
+        # Validator.validators[cls.__name__] = cls
 
 class Typed(Validator):
     expected_type = object
@@ -95,18 +99,45 @@ class Typed(Validator):
             raise TypeError(f'Expected {cls.expected_type}')
         return super().check(value)
 
-_typed_classes = [
-    ('Integer', int),
-    ('Float', float),
-    ('String', str) ]
+class Integer(Typed):
+    expected_type = int
 
-globals().update((name,
-                  type(name, (Typed,), {'expected_type': ty}))
-                 for name, ty in _typed_classes)
+class Float(Typed):
+    expected_type = float
 
+class String(Typed):
+    expected_type = str
 
-if __name__ == '__main__':
-    # print(globals())
-    integer = Integer() # type: ignore
-    res = integer.check(5)
-    print(res)
+class Positive(Validator):
+    @classmethod
+    def check(cls, value):
+        if value < 0:
+            raise ValueError('Expected >= 0')
+        return super().check(value)
+
+class NonEmpty(Validator):
+    @classmethod
+    def check(cls, value):
+        if len(value) == 0:
+            raise ValueError('Must be non-empty')
+        return super().check(value)
+
+class PositiveInteger(Integer, Positive):
+    ...
+
+class PositiveFloat(Float, Positive):
+    ...
+
+class NonEmptyString(String, NonEmpty):
+    ...
+
+# Validator.validators
+    # {'Float': <class 'validate.Float'>,
+    # 'Integer': <class 'validate.Integer'>,
+    # 'NonEmpty': <class 'validate.NonEmpty'>,
+    # 'NonEmptyString': <class 'validate.NonEmptyString'>,
+    # 'Positive': <class 'validate.Positive'>,
+    # 'PositiveFloat': <class 'validate.PositiveFloat'>,
+    # 'PositiveInteger': <class 'validate.PositiveInteger'>,
+    # 'String': <class 'validate.String'>,
+    # 'Typed': <class 'validate.Typed'>}
