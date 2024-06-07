@@ -1,7 +1,10 @@
 # reader.py
 
 import csv
+import logging
 from stock import Stock
+
+log = logging.getLogger(__name__)
 
 def convert_csv(lines, converter, *, headers=None):
     rows = csv.reader(lines)
@@ -13,8 +16,8 @@ def convert_csv(lines, converter, *, headers=None):
             record = converter(headers, row)
             records.append(record)
         except ValueError as e:
-            print(f'Row {i}: Bad row: {row}')
-            log.warning(f'Row {i}: Reason: {e}')
+            log.warning(f'Row {i}: Bad row: {row}')
+            log.debug(f'Row {i}: Reason: {e}')
     return records
 
 def csv_as_dicts(lines, types, *, headers=None):
@@ -45,7 +48,7 @@ def read_csv_as_instances(filename, cls, *, headers=None):
 
 
 if __name__ == '__main__':
-    portfolio = read_csv_as_instances('../Data/portfolio.csv', Stock)
+    portfolio = read_csv_as_instances('../Data/missing.csv', Stock)
     print(portfolio)
 
     from tableformat import create_formatter, print_table

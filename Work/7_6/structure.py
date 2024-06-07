@@ -48,7 +48,6 @@ class Structure(metaclass=StructureMeta):
         rowdata = [ func(val) for func, val in zip(cls._types, row) ]
         return cls(*rowdata)
 
-
     @classmethod
     def create_init(cls):
         '''
@@ -58,7 +57,7 @@ class Structure(metaclass=StructureMeta):
         code = f'def __init__(self, {args}):\n'
         for name in cls._fields:
             code += f'    self.{name} = {name}\n'
-        locs = { }
+        locs = {}
         exec(code, locs)
         cls.__init__ = locs['__init__']
 
