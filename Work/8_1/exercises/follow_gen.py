@@ -10,11 +10,11 @@ import time
 
 def follow(fname):
     with open(fname) as fh:
-        fh.seek(0, os.SEEK_END) # Move file pointer 0 bytes from end of file
+        fh.seek(0, os.SEEK_END)     # Move file pointer 0 bytes from end of file
         while True:
             line = fh.readline()
             if not line:
-                time.sleep(0.1)   # Sleep briefly and retry
+                time.sleep(0.1)     # Sleep briefly and retry
                 continue
             yield line
 
