@@ -27,7 +27,7 @@ import csv
 def to_csv(target):
     def producer():
         while True:
-            yield line
+            yield line  # `line` is found in the outer function scope
     reader = csv.reader(producer())
     while True:
         line = yield

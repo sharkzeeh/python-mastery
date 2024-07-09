@@ -1,5 +1,7 @@
 # cofollow.py
 
+# (b) Raising Exceptions
+
 import os
 import time
 
@@ -41,6 +43,7 @@ def printer():
 #   to signal an error instead of receiving a value.
 if __name__ == '__main__':
     # follow('../Data/stocklog.csv', printer())
+    # (b) Raising Exceptions
     p = printer()
     p.send('hello')
     p.send(42)
