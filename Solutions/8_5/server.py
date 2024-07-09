@@ -1,5 +1,7 @@
 # server.py
 
+# (b) Generators as Tasks Serving Network Connections
+
 from socket import *
 from select import select
 from collections import deque

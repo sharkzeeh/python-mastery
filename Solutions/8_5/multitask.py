@@ -1,5 +1,7 @@
 # multitask.py
 
+# (a) Generators as tasks
+
 from collections import deque
 
 tasks = deque()
