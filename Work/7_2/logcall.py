@@ -30,8 +30,12 @@ if __name__ == '__main__':
     def add(x, y):
         return x + y
     add(2, 3)
+    # Adding logging to add
+    # Calling add
 
     @logformat('{func.__code__.co_filename}:{func.__name__}')
     def mul(x, y):
         return x * y
     mul(2, 3)
+    # Adding logging to mul
+    # ~/python-mastery/Work/7_2/logcall.py:mul
