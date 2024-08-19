@@ -1,5 +1,7 @@
 # structure.py
 
+# (a) Making a Package
+
 from collections import ChainMap
 from .validate import Validator, validated
 

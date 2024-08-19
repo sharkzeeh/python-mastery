@@ -1,5 +1,7 @@
 # stock.py
 
+# (a) Making a Package
+
 from structly.structure import Structure
 
 class Stock(Structure):
